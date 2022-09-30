@@ -8,7 +8,6 @@ export default class ValidateUser {
 
   private static validatePassword(password: string): void {
     if (!password) throw new CustomError(400, 'All fields must be filled');
-    if (password.length < 8) throw new CustomError(401, 'Incorrect email or password');
   }
 
   public validateLogin = (req: Request, _res: Response, next: NextFunction) => {
