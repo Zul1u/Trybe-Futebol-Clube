@@ -45,7 +45,4 @@ describe('/login', () => {
       chai.expect(response.body).to.have.property('token')
     });
   });
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
 });
