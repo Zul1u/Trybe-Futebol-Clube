@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import CustomError from '../shared/customError';
+import CustomError from '../errors/customError';
 import { TokenInfos, VerifyToken } from './token.types';
 import 'dotenv/config';
 
