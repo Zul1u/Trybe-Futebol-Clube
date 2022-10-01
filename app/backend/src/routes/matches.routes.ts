@@ -17,6 +17,7 @@ class Matches {
 
   private methods(): void {
     this.matchesRouter.get('/', this.matchesContrler.getAll);
+    this.matchesRouter.get('/matches', this.matchesContrler.getAllInProgress);
   }
 }
 

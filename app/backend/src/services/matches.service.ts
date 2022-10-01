@@ -20,4 +20,15 @@ export default class MatchesService {
     });
     return matches;
   }
+
+  public async getAllInProgress(inProgress: boolean): Promise<IMatch[]> {
+    const matches = await this.matchModel.findAll({
+      where: { inProgress },
+      include: [
+        { model: this.teamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+        { model: this.teamModel, as: 'teamAway', attributes: { exclude: ['id'] } },
+      ],
+    });
+    return matches;
+  }
 }
