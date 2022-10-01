@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import CustomError from '../errors/customError';
-import { TokenInfos, VerifyToken } from './token.types';
+import { TokenInfos, VerifyToken } from '../interfaces/Token.types';
 import 'dotenv/config';
 
 export default class Token {
@@ -21,7 +21,7 @@ export default class Token {
     try {
       const payload = jwt.verify(token, this.secret) as VerifyToken;
       return payload;
-    } catch (err) {
+    } catch (error) {
       throw new CustomError(401, 'Invalid token');
     }
   }
