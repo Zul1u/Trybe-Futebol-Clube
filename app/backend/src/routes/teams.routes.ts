@@ -3,7 +3,7 @@ import TeamsService from '../services/teams.service';
 import TeamsController from '../controllers/teams.controller';
 import Team from '../database/models/Team';
 
-class Login {
+class Teams {
   public teamsRouter: Router;
   public teamsController: TeamsController;
 
@@ -20,6 +20,6 @@ class Login {
   }
 }
 
-const { teamsRouter } = new Login();
+const { teamsRouter } = new Teams();
 
 export default teamsRouter;
