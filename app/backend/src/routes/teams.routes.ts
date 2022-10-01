@@ -16,6 +16,7 @@ class Login {
 
   private methods(): void {
     this.teamsRouter.get('/', this.teamsController.getAll);
+    this.teamsRouter.get('/:id', this.teamsController.getById);
   }
 }
 
