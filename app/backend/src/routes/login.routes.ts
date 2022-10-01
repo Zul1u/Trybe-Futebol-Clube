@@ -3,7 +3,7 @@ import ValidateUser from '../middleware/login.middleware';
 import LoginController from '../controllers/login.controller';
 import TokenAuth from '../middleware/tokenAuth.middleware';
 
-export default class Login {
+class Login {
   public loginRouter: Router;
   private loginController: LoginController;
   private validateUser: ValidateUser;
@@ -26,4 +26,6 @@ export default class Login {
   }
 }
 
-export const { loginRouter } = new Login();
+const { loginRouter } = new Login();
+
+export default loginRouter;
