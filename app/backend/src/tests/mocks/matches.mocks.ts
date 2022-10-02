@@ -28,7 +28,64 @@ const matchInprogress = {
   }
 };
 
+export const failCreateMatch = [
+  {
+    homeTeam: 0,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+  {
+    homeTeam: 8,
+    homeTeamGoals: 1,
+    awayTeam: 0,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+  {
+    homeTeam: 8,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+];
+
+export const bodyOfNewMatch = {
+  homeTeam: 16,
+  homeTeamGoals: 1,
+  awayTeam: 8,
+  awayTeamGoals: 1,
+  inProgress: true,
+}
+
+export const newMatch = {
+  id: 49,
+  homeTeam: 16,
+  homeTeamGoals: 1,
+  awayTeam: 8,
+  awayTeamGoals: 1,
+  inProgress: true,
+};
+
 export const matchesList = [matchInprogress, matchInprogress, matchNotInProgress, matchNotInProgress];
 
 export const matchesListInProgress = [matchInprogress, matchInprogress];
 export const matchesListNotProgress = [matchNotInProgress, matchNotInProgress];
+
+export const finishedMatch = 'Finished';
+
+export const invalidTeamId = 'There is no team with such id!';
+export const sameTeamIds = 'It is not possible to create a match with two equal teams';
+
+// it('Deve ser possivel criar uma nova partida', async () => {
+//   const response = await chai
+//   .request(app)
+//   .post('/matches')
+//   .send(bodyOfNewMatch)
+//   .set('Authorization', mockToken);
+
+//   expect(response.status).to.equal(201);
+//   expect(response.body).to.deep.equal(newMatch)
+// });

@@ -12,14 +12,11 @@ import {
   fieldFillMessage,
   incorrectDataMessage,
   incorrectLogins,
-  invalidToken,
-  mockToken,
-  payload,
   SERVER_ERROR,
-  tokenNotFound,
   userIfos,
   userLogin
 } from './mocks/login.mocks';
+import { invalidToken, mockToken, payload, tokenNotFound } from './mocks/token.mock';
 
 chai.use(chaiHttp);
 
