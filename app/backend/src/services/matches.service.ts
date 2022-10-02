@@ -36,4 +36,8 @@ export default class MatchesService {
     const newMatch = await this.matchModel.create(matchInfos);
     return newMatch;
   }
+
+  public async finishMatch(id: number): Promise<void> {
+    await this.matchModel.update({ inProgress: false }, { where: { id } });
+  }
 }

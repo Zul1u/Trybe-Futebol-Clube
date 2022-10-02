@@ -26,9 +26,12 @@ class Matches {
     this.matchesRouter.get('/', this.matchesContrler.getAll);
     this.matchesRouter.get('/matches', this.matchesContrler.getAllInProgress);
 
+    this.matchesRouter.patch('/:id/finish', this.matchesContrler.finishMatch);
+
     this.matchesRouter.post(
       '/',
       this.tokenAuth.tokenValidation,
+      this.matchValidation.teamsValidation,
       this.matchesContrler.createMatch,
     );
   }
