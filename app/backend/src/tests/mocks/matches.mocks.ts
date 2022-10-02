@@ -78,14 +78,3 @@ export const finishedMatch = 'Finished';
 
 export const invalidTeamId = 'There is no team with such id!';
 export const sameTeamIds = 'It is not possible to create a match with two equal teams';
-
-// it('Deve ser possivel criar uma nova partida', async () => {
-//   const response = await chai
-//   .request(app)
-//   .post('/matches')
-//   .send(bodyOfNewMatch)
-//   .set('Authorization', mockToken);
-
-//   expect(response.status).to.equal(201);
-//   expect(response.body).to.deep.equal(newMatch)
-// });
