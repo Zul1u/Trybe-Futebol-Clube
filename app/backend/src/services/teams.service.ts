@@ -12,7 +12,7 @@ export default class TeamsService {
 
   public async getById(id: number): Promise<ITeam> {
     const team = await this.teamModel.findByPk(id);
-    if (!team) throw new CustomError(404, 'ID not found');
+    if (!team) throw new CustomError(404, 'There is no team with such id!');
 
     return team;
   }

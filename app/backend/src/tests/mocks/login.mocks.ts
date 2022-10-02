@@ -39,5 +39,5 @@ export const payload = {
 
 export const mockToken = tokenGenerator.createToken(payload);
 
-export const invalidToken = 'Invalid token';
+export const invalidToken = 'Token must be a valid token';
 export const tokenNotFound = 'Token not found';

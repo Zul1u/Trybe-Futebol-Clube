@@ -31,4 +31,9 @@ export default class MatchesService {
     });
     return matches;
   }
+
+  public async createMatch(matchInfos: IMatch): Promise<IMatch> {
+    const newMatch = await this.matchModel.create(matchInfos);
+    return newMatch;
+  }
 }

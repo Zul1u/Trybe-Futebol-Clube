@@ -4,4 +4,4 @@ export const team: ITeam = { id: 1, teamName: 'Avaí/Kindermann' };
 
 export const teams = [team, team, team, team, team];
 
-export const idNotFound = 'ID not found';
+export const idNotFound = 'There is no team with such id!';

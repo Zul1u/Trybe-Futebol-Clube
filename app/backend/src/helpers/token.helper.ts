@@ -17,12 +17,12 @@ export default class Token {
     return token;
   }
 
-  public verifyToken(token: string): VerifyToken {
+  protected verifyToken(token: string): VerifyToken {
     try {
       const payload = jwt.verify(token, this.secret) as VerifyToken;
       return payload;
     } catch (error) {
-      throw new CustomError(401, 'Invalid token');
+      throw new CustomError(401, 'Token must be a valid token');
     }
   }
 }
