@@ -1,6 +1,7 @@
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import IMatch from '../interfaces/IMatch.interface';
+import TeamsScore from '../interfaces/Team.type';
 
 export default class MatchesService {
   private teamModel: typeof Team;
@@ -39,5 +40,22 @@ export default class MatchesService {
 
   public async finishMatch(id: number): Promise<void> {
     await this.matchModel.update({ inProgress: false }, { where: { id } });
+  }
+
+  public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch | null> {
+    const { homeTeamGoals, awayTeamGoals } = teamsScore;
+    await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+
+    const updatedMatch = await this.matchModel.findByPk(
+      id,
+      {
+        include: [
+          { model: this.teamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: this.teamModel, as: 'teamAway', attributes: { exclude: ['id'] } },
+        ],
+      },
+    );
+
+    return updatedMatch;
   }
 }
