@@ -2,7 +2,6 @@ import { Router } from 'express';
 import LeaderboardService from '../services/leaderboard.service';
 import LeaderboardController from '../controllers/leaderboard.controller';
 import Match from '../database/models/Match';
-import Team from '../database/models/Team';
 
 class Leaderboard {
   public leaderboardRouter: Router;
@@ -10,12 +9,13 @@ class Leaderboard {
 
   constructor() {
     this.leaderboardRouter = Router();
-    this.leaderboardController = new LeaderboardController(new LeaderboardService(Match, Team));
+    this.leaderboardController = new LeaderboardController(new LeaderboardService(Match));
 
     this.methods();
   }
 
   private methods(): void {
+    this.leaderboardRouter.get('/', this.leaderboardController.getLeaderboardGeneral);
     this.leaderboardRouter.get('/home', this.leaderboardController.getLeaderboardHome);
     this.leaderboardRouter.get('/away', this.leaderboardController.getLeaderboardAway);
   }
