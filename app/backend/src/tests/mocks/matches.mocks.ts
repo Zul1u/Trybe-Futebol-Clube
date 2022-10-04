@@ -69,6 +69,26 @@ export const newMatch = {
   inProgress: true,
 };
 
+export const updateMatchScore = {
+  homeTeamGoals: 2,
+  awayTeamGoals: 3
+}
+
+export const updatedMatchScore = {
+  id: 2,
+  homeTeam: 9,
+  homeTeamGoals: 2,
+  awayTeam: 14,
+  awayTeamGoals: 3,
+  inProgress: false,
+  teamHome: {
+    teamName: 'Internacional'
+  },
+  teamAway: {
+    teamName: 'Santos'
+  }
+}
+
 export const matchesList = [matchInprogress, matchInprogress, matchNotInProgress, matchNotInProgress];
 
 export const matchesListInProgress = [matchInprogress, matchInprogress];

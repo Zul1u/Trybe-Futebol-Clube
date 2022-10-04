@@ -20,12 +20,12 @@ export default class MatchesController {
 
   public createMatch = async (req: Request, res: Response) => {
     const newMatch = await this.matchesService.createMatch(req.body);
-    res.status(201).json(newMatch);
+    return res.status(201).json(newMatch);
   };
 
   public finishMatch = async (req: Request, res: Response) => {
     await this.matchesService.finishMatch(Number(req.params.id));
-    res.status(200).json({ message: 'Finished' });
+    return res.status(200).json({ message: 'Finished' });
   };
 
   public updateMatchScore = async (req: Request, res: Response) => {
@@ -37,6 +37,6 @@ export default class MatchesController {
       Number(req.params.id),
     );
 
-    res.status(200).json(updatedMatch);
+    return res.status(200).json(updatedMatch);
   };
 }

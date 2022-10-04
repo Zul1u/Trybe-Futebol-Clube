@@ -2,6 +2,7 @@ import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import IMatch from '../interfaces/IMatch.interface';
 import TeamsScore from '../interfaces/Team.type';
+import CustomError from '../errors/customError';
 
 export default class MatchesService {
   private teamModel: typeof Team;
@@ -42,7 +43,7 @@ export default class MatchesService {
     await this.matchModel.update({ inProgress: false }, { where: { id } });
   }
 
-  public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch | null> {
+  public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch> {
     const { homeTeamGoals, awayTeamGoals } = teamsScore;
     await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
 
@@ -55,6 +56,8 @@ export default class MatchesService {
         ],
       },
     );
+
+    if (!updatedMatch) throw new CustomError(404, 'There is no team with such id!');
 
     return updatedMatch;
   }

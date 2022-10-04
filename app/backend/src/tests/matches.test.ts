@@ -17,6 +17,8 @@ import {
   matchesListNotProgress,
   newMatch,
   sameTeamIds,
+  updatedMatchScore,
+  updateMatchScore,
 } from './mocks/matches.mocks';
 import { invalidToken, mockToken, tokenNotFound } from './mocks/token.mock';
 
@@ -46,11 +48,11 @@ describe('GET', () => {
       before(() => {
         sinon.stub(Match, 'findAll').resolves(matchesListInProgress as Match[]);
       });
-  
+
       after(() => {
         (Match.findAll as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar uma lista com todas as partidas que estão em progreço', async () => {
         const response = await chai.request(app).get('/matches/matches?inProgress=true');
         expect(response.status).to.equal(200);
@@ -62,11 +64,11 @@ describe('GET', () => {
       before(() => {
         sinon.stub(Match, 'findAll').resolves(matchesListNotProgress as Match[]);
       });
-  
+
       after(() => {
         (Match.findAll as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar uma lista com todas as partidas que não estão em progreço', async () => {
         const response = await chai.request(app).get('/matches/matches?inProgress=false');
         expect(response.status).to.equal(200);
@@ -78,11 +80,11 @@ describe('GET', () => {
       before(() => {
         sinon.stub(Match, 'findAll').resolves(matchesList as Match[]);
       });
-  
+
       after(() => {
         (Match.findAll as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar uma lista com todas as partidas', async () => {
         const response = await chai.request(app).get('/matches/matches?inProgress=');
         expect(response.status).to.equal(200);
@@ -109,6 +111,46 @@ describe('PATCH', () => {
       expect(response.body).to.deep.equal({ message: finishedMatch });
     });
   });
+
+  describe('Rota /matches/:id', () => {
+    describe('Quando a requisição é feita com sucesso', () => {
+      before(() => {
+        sinon.stub(Match, 'update').resolves();
+        sinon.stub(Match, 'findByPk').resolves(updatedMatchScore as Match);
+      });
+
+      after(() => {
+        (Match.update as sinon.SinonStub).restore();
+        (Match.findByPk as sinon.SinonStub).restore();
+      });
+
+      it('Deve retornar a mensagem "Finished"', async () => {
+        const response = await chai.request(app).patch('/matches/2').send(updateMatchScore);
+
+        expect(response.status).to.equal(200);
+        expect(response.body).to.deep.equal(updatedMatchScore);
+      });
+    });
+
+    describe('Quando é passado um id invalido', () => {
+      before(() => {
+        sinon.stub(Match, 'update').resolves();
+        sinon.stub(Match, 'findByPk').resolves(null);
+      });
+
+      after(() => {
+        (Match.update as sinon.SinonStub).restore();
+        (Match.findByPk as sinon.SinonStub).restore();
+      });
+
+      it('Deve retornar a mensagem "Finished"', async () => {
+        const response = await chai.request(app).patch('/matches/2').send(updateMatchScore);
+
+        expect(response.status).to.equal(404);
+        expect(response.body).to.deep.equal({ message: invalidTeamId });
+      });
+    });
+  });
 });
 
 describe('POST', () => {
@@ -117,7 +159,7 @@ describe('POST', () => {
       before(() => {
         sinon.stub(Match, 'create').resolves(newMatch as Match);
       });
-  
+
       after(() => {
         (Match.create as sinon.SinonStub).restore();
       });
@@ -134,7 +176,7 @@ describe('POST', () => {
       before(() => {
         sinon.stub(Match, 'create').resolves(newMatch as Match);
       });
-  
+
       after(() => {
         (Match.create as sinon.SinonStub).restore();
       });
@@ -151,17 +193,17 @@ describe('POST', () => {
       before(() => {
         sinon.stub(Match, 'create').resolves(newMatch as Match);
       });
-  
+
       after(() => {
         (Match.create as sinon.SinonStub).restore();
       });
 
       it('Não deve ser possivel criar uma nova partida (homeTeam)', async () => {
         const response = await chai
-        .request(app)
-        .post('/matches')
-        .send(failCreateMatch[0])
-        .set('Authorization', mockToken);
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[0])
+          .set('Authorization', mockToken);
 
         expect(response.status).to.equal(404);
         expect(response.body).to.deep.equal({ message: invalidTeamId })
@@ -169,10 +211,10 @@ describe('POST', () => {
 
       it('Não deve ser possivel criar uma nova partida (awayTeam)', async () => {
         const response = await chai
-        .request(app)
-        .post('/matches')
-        .send(failCreateMatch[1])
-        .set('Authorization', mockToken);
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[1])
+          .set('Authorization', mockToken);
 
         expect(response.status).to.equal(404);
         expect(response.body).to.deep.equal({ message: invalidTeamId })
@@ -183,17 +225,17 @@ describe('POST', () => {
       before(() => {
         sinon.stub(Match, 'create').resolves(newMatch as Match);
       });
-  
+
       after(() => {
         (Match.create as sinon.SinonStub).restore();
       });
 
       it('Não deve ser possivel criar uma nova partida', async () => {
         const response = await chai
-        .request(app)
-        .post('/matches')
-        .send(failCreateMatch[2])
-        .set('Authorization', mockToken);
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[2])
+          .set('Authorization', mockToken);
 
         expect(response.status).to.equal(401);
         expect(response.body).to.deep.equal({ message: sameTeamIds })
@@ -204,18 +246,18 @@ describe('POST', () => {
       before(() => {
         sinon.stub(Match, 'create').resolves(newMatch as Match);
       });
-  
+
       after(() => {
         (Match.create as sinon.SinonStub).restore();
       });
 
       it('Deve ser possivel criar uma nova partida', async () => {
         const response = await chai
-        .request(app)
-        .post('/matches')
-        .send(bodyOfNewMatch)
-        .set('Authorization', mockToken);
-      
+          .request(app)
+          .post('/matches')
+          .send(bodyOfNewMatch)
+          .set('Authorization', mockToken);
+
         expect(response.status).to.equal(201);
         expect(response.body).to.deep.equal(newMatch)
       });
