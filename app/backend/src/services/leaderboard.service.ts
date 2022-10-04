@@ -16,7 +16,7 @@ export default class LeaderboardService {
     const leaderboardHomeTeam = await this.matchModel
       .sequelize?.query(queryleaderboardHomeTeam, { type: QueryTypes.SELECT });
 
-    if (!leaderboardHomeTeam) throw new CustomError(401, '');
+    if (!leaderboardHomeTeam) throw new CustomError(500, 'Algo deu errado!!');
 
     return leaderboardHomeTeam as ILeaderboard[];
   }
@@ -25,7 +25,7 @@ export default class LeaderboardService {
     const leaderboardAwayTeam = await this.matchModel
       .sequelize?.query(queryleaderboardAwayTeam, { type: QueryTypes.SELECT });
 
-    if (!leaderboardAwayTeam) throw new CustomError(401, '');
+    if (!leaderboardAwayTeam) throw new CustomError(500, 'Algo deu errado!!');
 
     return leaderboardAwayTeam as ILeaderboard[];
   }
@@ -50,11 +50,10 @@ export default class LeaderboardService {
 
   private buildingGeneralLeaderboard(home: ILeaderboard[], away: ILeaderboard[]): void {
     this.generalLeaderboard = [];
-    home.filter((homeTeam: ILeaderboard) => away.filter((awayTeam: ILeaderboard) => {
+    home.filter((homeTeam: ILeaderboard) => away.forEach((awayTeam: ILeaderboard) => {
       if (homeTeam.name === awayTeam.name) {
-        return this.leaderboard(homeTeam, awayTeam);
+        this.leaderboard(homeTeam, awayTeam);
       }
-      return null;
     }));
   }
 
