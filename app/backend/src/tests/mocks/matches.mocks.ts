@@ -1,4 +1,4 @@
-const matchNotInProgress = {
+export const matchNotInProgress = {
   id: 1,
   homeTeam: 16,
   homeTeamGoals: 1,
@@ -13,7 +13,7 @@ const matchNotInProgress = {
   }
 };
 
-const matchInprogress = {
+export const matchInprogress = {
   id: 2,
   homeTeam: 16,
   homeTeamGoals: 1,
@@ -132,3 +132,5 @@ export const sameTeamIds = 'It is not possible to create a match with two equal 
 export const teamRequired = 'Home team and away team fields are required and must be of type number';
 export const teamGoalsRequired = 'Home team goals and away team goals fields are required and must be of type number';
 export const inProgressRequired = 'in progress field is required';
+
+export const matchAlreadyFinished = 'this match has already finished';

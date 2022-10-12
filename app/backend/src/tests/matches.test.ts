@@ -13,9 +13,12 @@ import {
   finishedMatch,
   inProgressRequired,
   invalidTeamId,
+  matchAlreadyFinished,
   matchesList,
   matchesListInProgress,
   matchesListNotProgress,
+  matchInprogress,
+  matchNotInProgress,
   newMatch,
   sameTeamIds,
   teamGoalsRequired,
@@ -99,19 +102,61 @@ describe('GET', () => {
 
 describe('PATCH', () => {
   describe('Rota /matches/:id/finish', () => {
-    before(() => {
-      sinon.stub(Match, 'update').resolves();
+    describe('Quando é passado o id de uma partida inexistente', () => {
+      before(() => {
+        sinon.stub(Match, 'findByPk').resolves(null);
+        sinon.stub(Match, 'update').resolves();
+      });
+  
+      after(() => {
+        (Match.findByPk as sinon.SinonStub).restore();
+        (Match.update as sinon.SinonStub).restore();
+      });
+  
+      it('Deve retornar a mensagem "There is no team with such id!"', async () => {
+        const response = await chai.request(app).patch('/matches/0/finish');
+  
+        expect(response.status).to.equal(404);
+        expect(response.body).to.deep.equal({ message: invalidTeamId });
+      });
     });
 
-    after(() => {
-      (Match.update as sinon.SinonStub).restore();
+    describe('Quando é passado o id de uma partida que ja acabou', () => {
+      before(() => {
+        sinon.stub(Match, 'findByPk').resolves(matchNotInProgress as Match);
+        sinon.stub(Match, 'update').resolves();
+      });
+  
+      after(() => {
+        (Match.findByPk as sinon.SinonStub).restore();
+        (Match.update as sinon.SinonStub).restore();
+      });
+  
+      it('Deve retornar a mensagem "this match has already finished"', async () => {
+        const response = await chai.request(app).patch('/matches/1/finish');
+  
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: matchAlreadyFinished });
+      });
     });
 
-    it('Deve retornar a mensagem "Finished"', async () => {
-      const response = await chai.request(app).patch('/matches/2/finish');
-
-      expect(response.status).to.equal(200);
-      expect(response.body).to.deep.equal({ message: finishedMatch });
+    describe('Quando a partida é finalizada com sucesso', () => {
+      before(() => {
+        sinon.stub(Match, 'findByPk').resolves(matchInprogress as Match);
+        sinon.stub(Match, 'update').resolves();
+      });
+  
+      after(() => {
+        (Match.findByPk as sinon.SinonStub).restore();
+        (Match.update as sinon.SinonStub).restore();
+      });
+  
+      it('Deve retornar a mensagem "Finished"', async () => {
+        const response = await chai.request(app).patch('/matches/48/finish');
+  
+        expect(response.status).to.equal(200);
+        expect(response.body).to.deep.equal({ message: finishedMatch });
+      });
     });
   });
 
