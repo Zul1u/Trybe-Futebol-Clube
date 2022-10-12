@@ -34,20 +34,8 @@ export default class MatchesService {
     return matches;
   }
 
-  public async createMatch(matchInfos: IMatch): Promise<IMatch> {
-    const newMatch = await this.matchModel.create(matchInfos);
-    return newMatch;
-  }
-
-  public async finishMatch(id: number): Promise<void> {
-    await this.matchModel.update({ inProgress: false }, { where: { id } });
-  }
-
-  public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch> {
-    const { homeTeamGoals, awayTeamGoals } = teamsScore;
-    await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
-
-    const updatedMatch = await this.matchModel.findByPk(
+  public async getById(id: number): Promise<IMatch> {
+    const match = await this.matchModel.findByPk(
       id,
       {
         include: [
@@ -57,7 +45,28 @@ export default class MatchesService {
       },
     );
 
-    if (!updatedMatch) throw new CustomError(404, 'There is no team with such id!');
+    if (!match) throw new CustomError(404, 'There is no team with such id!');
+
+    return match;
+  }
+
+  public async createMatch(matchInfos: IMatch): Promise<IMatch> {
+    const newMatch = await this.matchModel.create(matchInfos);
+    return newMatch;
+  }
+
+  public async finishMatch(id: number): Promise<void> {
+    const match = await this.getById(id);
+    if (!match.inProgress) throw new CustomError(400, 'this match has already finished');
+
+    await this.matchModel.update({ inProgress: false }, { where: { id } });
+  }
+
+  public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch> {
+    const { homeTeamGoals, awayTeamGoals } = teamsScore;
+    await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+
+    const updatedMatch = await this.getById(id);
 
     return updatedMatch;
   }
