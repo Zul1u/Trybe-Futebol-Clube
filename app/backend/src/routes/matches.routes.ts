@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Match from '../database/models/Match';
 import MatchesService from '../services/matches.service';
-import MatchesController from '../controllers/Matches.controller';
+import MatchesController from '../controllers/matches.controller';
 import Team from '../database/models/Team';
 import TokenAuth from '../middleware/tokenAuth.middleware';
 import MatchValidation from '../middleware/matches.middleware';
@@ -32,7 +32,7 @@ class Matches {
     this.matchesRouter.post(
       '/',
       this.tokenAuth.tokenValidation,
-      this.matchValidation.teamsValidation,
+      this.matchValidation.matchCreationValidation,
       this.matchesContrler.createMatch,
     );
   }
