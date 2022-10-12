@@ -50,6 +50,36 @@ export const failCreateMatch = [
     awayTeamGoals: 1,
     inProgress: true,
   },
+  {
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+  {
+    homeTeam: 16,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+  {
+    homeTeam: 16,
+    homeTeamGoals: 1,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+  {
+    homeTeam: 16,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    inProgress: true,
+  },
+  {
+    homeTeam: 16,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+  }
 ];
 
 export const bodyOfNewMatch = {
@@ -98,3 +128,7 @@ export const finishedMatch = 'Finished';
 
 export const invalidTeamId = 'There is no team with such id!';
 export const sameTeamIds = 'It is not possible to create a match with two equal teams';
+
+export const teamRequired = 'Home team and away team fields are required and must be of type number';
+export const teamGoalsRequired = 'Home team goals and away team goals fields are required and must be of type number';
+export const inProgressRequired = 'in progress field is required';

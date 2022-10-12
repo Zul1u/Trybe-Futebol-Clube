@@ -11,12 +11,15 @@ import {
   bodyOfNewMatch,
   failCreateMatch,
   finishedMatch,
+  inProgressRequired,
   invalidTeamId,
   matchesList,
   matchesListInProgress,
   matchesListNotProgress,
   newMatch,
   sameTeamIds,
+  teamGoalsRequired,
+  teamRequired,
   updatedMatchScore,
   updateMatchScore,
 } from './mocks/matches.mocks';
@@ -186,6 +189,71 @@ describe('POST', () => {
 
         expect(response.status).to.equal(401);
         expect(response.body).to.deep.equal({ message: tokenNotFound })
+      });
+    });
+
+    describe('Quando os campos são preenchidos incorretamente ou não são preenchidos', () => {
+      before(() => {
+        sinon.stub(Match, 'create').resolves(newMatch as Match);
+      });
+
+      after(() => {
+        (Match.create as sinon.SinonStub).restore();
+      });
+
+      it('Não deve ser possivel criar uma nova partida quando o campo homeTeam não é informado', async () => {
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[3])
+          .set('Authorization', mockToken);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamRequired })
+      });
+
+      it('Não deve ser possivel criar uma nova partida quando o campo homeTeamGoals não é informado', async () => {
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[4])
+          .set('Authorization', mockToken);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamGoalsRequired })
+      });
+
+      it('Não deve ser possivel criar uma nova partida quando o campo awayTeam não é informado', async () => {
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[5])
+          .set('Authorization', mockToken);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamRequired })
+      });
+
+      it('Não deve ser possivel criar uma nova partida quando o campo awayTeamGoals não é informado', async () => {
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[6])
+          .set('Authorization', mockToken);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamGoalsRequired })
+      });
+
+      it('Não deve ser possivel criar uma nova partida quando o campo inProgress não é informado', async () => {
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .send(failCreateMatch[7])
+          .set('Authorization', mockToken);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: inProgressRequired })
       });
     });
 

@@ -22,15 +22,15 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Rota /login', () => {
-  describe('POST', () => {
+describe('POST', () => {
+  describe('Rota /login', () => {
     describe('Quando a função findOne faz uma busca com sucesso', () => {
       before(() => {
         sinon.stub(User, 'findOne').resolves(userIfos as User);
       });
 
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
 
       it('Deve efetuar o login com sucesso', async () => {
@@ -52,7 +52,7 @@ describe('Rota /login', () => {
       });
 
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
 
       it('Deve retornar uma bad request se o email não for informado', async () => {
@@ -80,7 +80,7 @@ describe('Rota /login', () => {
       });
 
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
 
       it('Deve retornar um erro', async () => {
@@ -92,17 +92,17 @@ describe('Rota /login', () => {
   });
 });
 
-describe('Rota /login/validate', () => {
-  describe('GET', () => {
+describe('GET', () => {
+  describe('Rota /login/validate', () => {
     describe('Quando é passado um token valido', () => {
       before(() => {
         sinon.stub(User, 'findOne').resolves(userIfos as User);
       });
-  
+
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a role do usuario', async () => {
         const response = await chai.request(app).get('/login/validate').set('Authorization', mockToken);
         chai.expect(response.status).to.equal(200);
@@ -114,11 +114,11 @@ describe('Rota /login/validate', () => {
       before(() => {
         sinon.stub(User, 'findOne').resolves(userIfos as User);
       });
-  
+
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a mensagem "Invalid token"', async () => {
         const response = await chai.request(app).get('/login/validate').set('Authorization', 'token123');
         chai.expect(response.status).to.equal(401);
@@ -130,11 +130,11 @@ describe('Rota /login/validate', () => {
       before(() => {
         sinon.stub(User, 'findOne').resolves(userIfos as User);
       });
-  
+
       after(() => {
-        (User.findOne as sinon.SinonStub ).restore();
+        (User.findOne as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a mensagem "Token not found"', async () => {
         const response = await chai.request(app).get('/login/validate')
         chai.expect(response.status).to.equal(401);
