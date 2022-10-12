@@ -52,4 +52,17 @@ export default class MatchValidation {
 
     next();
   };
+
+  public checkMatchScoreUpdateFields = async (req: Request, _res: Response, next: NextFunction) => {
+    const { awayTeamGoals, homeTeamGoals } = req.body;
+
+    if (typeof awayTeamGoals !== 'number' || typeof homeTeamGoals !== 'number') {
+      throw new CustomError(
+        400,
+        'Home team goals and away team goals fields are required and must be of type number',
+      );
+    }
+
+    next();
+  };
 }

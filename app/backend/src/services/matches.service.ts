@@ -63,6 +63,9 @@ export default class MatchesService {
   }
 
   public async updateMatchScore(teamsScore: TeamsScore, id: number): Promise<IMatch> {
+    const match = await this.getById(id);
+    if (!match.inProgress) throw new CustomError(400, 'this match has already finished');
+
     const { homeTeamGoals, awayTeamGoals } = teamsScore;
     await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
 

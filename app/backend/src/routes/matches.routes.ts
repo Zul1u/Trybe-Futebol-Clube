@@ -27,7 +27,11 @@ class Matches {
     this.matchesRouter.get('/matches', this.matchesContrler.getAllInProgress);
 
     this.matchesRouter.patch('/:id/finish', this.matchesContrler.finishMatch);
-    this.matchesRouter.patch('/:id', this.matchesContrler.updateMatchScore);
+    this.matchesRouter.patch(
+      '/:id',
+      this.matchValidation.checkMatchScoreUpdateFields,
+      this.matchesContrler.updateMatchScore,
+    );
 
     this.matchesRouter.post(
       '/',
