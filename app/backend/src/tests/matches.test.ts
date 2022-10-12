@@ -10,6 +10,7 @@ import Match from '../database/models/Match';
 import {
   bodyOfNewMatch,
   failCreateMatch,
+  failUpdateMatchScore,
   finishedMatch,
   inProgressRequired,
   invalidTeamId,
@@ -107,15 +108,15 @@ describe('PATCH', () => {
         sinon.stub(Match, 'findByPk').resolves(null);
         sinon.stub(Match, 'update').resolves();
       });
-  
+
       after(() => {
         (Match.findByPk as sinon.SinonStub).restore();
         (Match.update as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a mensagem "There is no team with such id!"', async () => {
         const response = await chai.request(app).patch('/matches/0/finish');
-  
+
         expect(response.status).to.equal(404);
         expect(response.body).to.deep.equal({ message: invalidTeamId });
       });
@@ -126,15 +127,15 @@ describe('PATCH', () => {
         sinon.stub(Match, 'findByPk').resolves(matchNotInProgress as Match);
         sinon.stub(Match, 'update').resolves();
       });
-  
+
       after(() => {
         (Match.findByPk as sinon.SinonStub).restore();
         (Match.update as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a mensagem "this match has already finished"', async () => {
         const response = await chai.request(app).patch('/matches/1/finish');
-  
+
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.equal({ message: matchAlreadyFinished });
       });
@@ -145,15 +146,15 @@ describe('PATCH', () => {
         sinon.stub(Match, 'findByPk').resolves(matchInprogress as Match);
         sinon.stub(Match, 'update').resolves();
       });
-  
+
       after(() => {
         (Match.findByPk as sinon.SinonStub).restore();
         (Match.update as sinon.SinonStub).restore();
       });
-  
+
       it('Deve retornar a mensagem "Finished"', async () => {
         const response = await chai.request(app).patch('/matches/48/finish');
-  
+
         expect(response.status).to.equal(200);
         expect(response.body).to.deep.equal({ message: finishedMatch });
       });
@@ -161,29 +162,51 @@ describe('PATCH', () => {
   });
 
   describe('Rota /matches/:id', () => {
-    describe('Quando a requisição é feita com sucesso', () => {
+    describe('Quando os campos são preenchidos incorretamente ou não são preenchidos', () => {
       before(() => {
-        sinon.stub(Match, 'update').resolves();
-        sinon.stub(Match, 'findByPk').resolves(updatedMatchScore as Match);
+        sinon.stub(Match, 'findByPk').resolves(matchInprogress as Match)
       });
 
       after(() => {
-        (Match.update as sinon.SinonStub).restore();
         (Match.findByPk as sinon.SinonStub).restore();
       });
 
-      it('Deve retornar a mensagem "Finished"', async () => {
-        const response = await chai.request(app).patch('/matches/2').send(updateMatchScore);
+      it('Deve retornar uma mensagem de erro quando o campo homeTeamGoals não é preenchido', async () => {
+        const response = await chai.request(app).patch('/matches/2').send(failUpdateMatchScore[0]);
 
-        expect(response.status).to.equal(200);
-        expect(response.body).to.deep.equal(updatedMatchScore);
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamGoalsRequired });
+      });
+
+      it('Deve retornar uma mensagem de erro quando o campo awayTeamGoals não é preenchido', async () => {
+        const response = await chai.request(app).patch('/matches/2').send(failUpdateMatchScore[1]);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: teamGoalsRequired });
+      });
+    });
+
+    describe('Quando a partida ja foi finalizada', () => {
+      before(() => {
+        sinon.stub(Match, 'findByPk').resolves(matchNotInProgress as Match)
+      });
+
+      after(() => {
+        (Match.findByPk as sinon.SinonStub).restore();
+      });
+
+      it('Deve retornar a mensagem "this match has already finished"', async () => {
+        const response = await chai.request(app).patch('/matches/1').send(updateMatchScore);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.deep.equal({ message: matchAlreadyFinished });
       });
     });
 
     describe('Quando é passado um id invalido', () => {
       before(() => {
-        sinon.stub(Match, 'update').resolves();
         sinon.stub(Match, 'findByPk').resolves(null);
+        sinon.stub(Match, 'update').resolves();
       });
 
       after(() => {
@@ -191,11 +214,33 @@ describe('PATCH', () => {
         (Match.findByPk as sinon.SinonStub).restore();
       });
 
-      it('Deve retornar a mensagem "Finished"', async () => {
+      it('Deve retornar a mensagem "There is no team with such id!"', async () => {
         const response = await chai.request(app).patch('/matches/2').send(updateMatchScore);
 
         expect(response.status).to.equal(404);
         expect(response.body).to.deep.equal({ message: invalidTeamId });
+      });
+    });
+
+    describe('Quando a requisição é feita com sucesso', () => {
+      before(() => {
+        sinon.stub(Match, 'findByPk')
+          .onFirstCall().resolves(matchInprogress as Match)
+          .onSecondCall().resolves(updatedMatchScore as Match);
+
+        sinon.stub(Match, 'update').resolves();
+      });
+
+      after(() => {
+        (Match.update as sinon.SinonStub).restore();
+        (Match.findByPk as sinon.SinonStub).restore();
+      });
+
+      it('Deve retornar a partida atualizada', async () => {
+        const response = await chai.request(app).patch('/matches/2').send(updateMatchScore);
+
+        expect(response.status).to.equal(200);
+        expect(response.body).to.deep.equal(updatedMatchScore);
       });
     });
   });

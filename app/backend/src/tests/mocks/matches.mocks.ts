@@ -99,6 +99,15 @@ export const newMatch = {
   inProgress: true,
 };
 
+export const failUpdateMatchScore = [
+  {
+    awayTeamGoals: 3,
+  },
+  {
+    homeTeamGoals: 2,
+  }
+]
+
 export const updateMatchScore = {
   homeTeamGoals: 2,
   awayTeamGoals: 3
