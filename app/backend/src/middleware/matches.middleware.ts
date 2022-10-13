@@ -26,11 +26,8 @@ export default class MatchValidation {
   }
 
   private static checksIfAllFieldsAreSentCorrectly(teamsInfo: IMatch): void {
-    const { awayTeam, awayTeamGoals, homeTeam, homeTeamGoals, inProgress } = teamsInfo;
+    const { awayTeam, awayTeamGoals, homeTeam, homeTeamGoals } = teamsInfo;
 
-    if (typeof inProgress !== 'boolean') {
-      throw new CustomError(400, 'in progress field is required');
-    }
     MatchValidation.checksIfTeamFieldIsSentCorrectly(awayTeam, awayTeamGoals);
     MatchValidation.checksIfTeamFieldIsSentCorrectly(homeTeam, homeTeamGoals);
   }
@@ -56,7 +53,7 @@ export default class MatchValidation {
   public checkMatchScoreUpdateFields = async (req: Request, _res: Response, next: NextFunction) => {
     const { awayTeamGoals, homeTeamGoals } = req.body;
 
-    if (typeof awayTeamGoals !== 'number' || typeof homeTeamGoals !== 'number') {
+    if (awayTeamGoals === undefined || homeTeamGoals === undefined) {
       throw new CustomError(
         400,
         'Home team goals and away team goals fields are required and must be of type number',
