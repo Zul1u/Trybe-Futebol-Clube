@@ -12,7 +12,6 @@ import {
   failCreateMatch,
   failUpdateMatchScore,
   finishedMatch,
-  inProgressRequired,
   invalidTeamId,
   matchAlreadyFinished,
   matchesList,
@@ -333,17 +332,6 @@ describe('POST', () => {
 
         expect(response.status).to.equal(400);
         expect(response.body).to.deep.equal({ message: teamGoalsRequired })
-      });
-
-      it('Não deve ser possivel criar uma nova partida quando o campo inProgress não é informado', async () => {
-        const response = await chai
-          .request(app)
-          .post('/matches')
-          .send(failCreateMatch[7])
-          .set('Authorization', mockToken);
-
-        expect(response.status).to.equal(400);
-        expect(response.body).to.deep.equal({ message: inProgressRequired })
       });
     });
 
