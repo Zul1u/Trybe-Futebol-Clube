@@ -100,3 +100,5 @@ npm run lint
 ## Observações
 
 Neste projeto as configurações dos scripts (dos arquivos package.json), do docker e do Eslint foram desenvolvidas pela equipe da [Trybe](https://www.betrybe.com/).
+
+Este README foi escrito com base em um do [LDeice](https://github.com/LDeive505).
