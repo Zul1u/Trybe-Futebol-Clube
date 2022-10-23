@@ -6,7 +6,7 @@
 * [Configurações Iniciais](#configurações-iniciais)
 * [Pré-requisitos](#pré-requisitos)
 * [Instalando](#instalando)
-* [Executando com Docker](#executando-com-docker)
+* [Executando com Docker](#executando-com-o-docker)
 * [Executando os testes](#executando-os-testes)
 * [Principais Tecnologias usadas](#principais-tecnologias-usadas)
 * [Observações](#observações)
