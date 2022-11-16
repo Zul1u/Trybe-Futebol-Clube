@@ -24,11 +24,14 @@ Essas instruções fornecerão a você uma cópia do projeto em sua máquina loc
 
 Para executar este projeto você precisará ter instalado em sua máquina:
 
-* [Node.js](https://nodejs.org/en/)
-* [MySQL](https://www.mysql.com/)
+* [Docker](https://docs.docker.com/) (obrigatório)
+* [Node.js](https://nodejs.org/en/) (opcional)
+* [MySQL](https://www.mysql.com/) (opcional)
 * [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (opcional)
 
- MySQL Workbench é opcional, mas é recomendado para gerenciar o banco de dados através de uma interface visual.
+  Para executar esse projeto é necessário ter o docker instalado em sua máquina. O MySQL e o node.js são opcionais pois ao executar os arquivos do docker ele já faz a instalação dessas dependências para o no projeto.
+  
+ O MySQL Workbench é opcional, mas é recomendado para gerenciar o banco de dados através de uma interface visual.
 
 ### Instalando
 
@@ -38,9 +41,10 @@ Antes de tudo, após clonar o repositório, você precisará instalar as depend�
 cd Trybe-Futebol-Clube && npm run postinstall
 ```
 
-Para executar o projeto sem o Docker, você precisará criar um arquivo `.env` na raiz do projeto e preenchê-lo com as seguintes informações:
+⚠️ Este projeto deve ser executado com o docker:
 
 ```
+.env.example
 JWT_SECRET=jwt_secret
 APP_PORT=3001
 DB_USER=seu_user
@@ -51,9 +55,7 @@ DB_PORT=3002
 
 Nos campos HOST, USER e PASSWORD, você deve inserir as informações do seu banco de dados MySQL. Se você estiver usando o MySQL Workbench, poderá encontrar essas informações na guia MySQL Connections.
 
-## Executando com o Docker
-
-Para executar o projeto com o Docker, você precisará ter o Docker instalado em sua máquina. Depois disso, você precisará executar os seguintes comandos na pasta raiz do projeto:
+Depois disso, você precisará executar os seguintes comandos na pasta raiz do projeto:
 
 ```
 npm run compose:up:dev
@@ -67,9 +69,10 @@ npm run compose:down:dev
 
 ## Executando os testes
 
-Para executar os testes, você deve ir ao diretório backend e executar o seguinte comando:
+Para executar os testes, você deve ir ao diretório backend e executar os seguintes comandos:
 
 ```
+docker exec -it app_backend sh
 npm run test
 ```
 
