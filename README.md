@@ -6,7 +6,6 @@
 * [Configurações Iniciais](#configurações-iniciais)
 * [Pré-requisitos](#pré-requisitos)
 * [Instalando](#instalando)
-* [Executando com Docker](#executando-com-o-docker)
 * [Executando os testes](#executando-os-testes)
 * [Principais Tecnologias usadas](#principais-tecnologias-usadas)
 * [Observações](#observações)
@@ -29,7 +28,7 @@ Para executar este projeto você precisará ter instalado em sua máquina:
 * [MySQL](https://www.mysql.com/) (opcional)
 * [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (opcional)
 
-  Para executar esse projeto é necessário ter o docker instalado em sua máquina. O MySQL e o node.js são opcionais pois ao executar os arquivos do docker ele já faz a instalação dessas dependências para o no projeto.
+ Para executar esse projeto é necessário ter o docker instalado em sua máquina. O MySQL e o node.js são opcionais pois ao executar os arquivos do docker ele já faz a instalação dessas dependências para o no projeto.
   
  O MySQL Workbench é opcional, mas é recomendado para gerenciar o banco de dados através de uma interface visual.
 
